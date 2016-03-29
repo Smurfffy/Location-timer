@@ -21,8 +21,12 @@
             </StackPanel>
 
         </StackPanel>
-        <StackPanel HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center">
-            <bm:Map Credentials="7TkKTTXTk4ht01L8MC81~PQzBv6HYpZU-MWoJPxOUsA~AgC8iYq1RDB7ZVuw43IbvcO7OwQ7QRybL-GQDFZmtTi3QkxAbHHT11HYQg7M2gmM" x:Name="myMap" />
+        <StackPanel HorizontalAlignment="Center" Margin="10" VerticalAlignment="Bottom">
+            <bm:Map Credentials="7TkKTTXTk4ht01L8MC81~PQzBv6HYpZU-MWoJPxOUsA~AgC8iYq1RDB7ZVuw43IbvcO7OwQ7QRybL-GQDFZmtTi3QkxAbHHT11HYQg7M2gmM" x:Name="myMap" MapType="Road" ZoomLevel="12" Width="350" Height="400">
+                <bm:Map.Center>
+                    <bm:Location Latitude="53.2777082" Longitude="-9.0098961" />
+                </bm:Map.Center>
+            </bm:Map>
         </StackPanel>
         
 
