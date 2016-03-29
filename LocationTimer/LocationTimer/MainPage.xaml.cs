@@ -15,16 +15,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace LocationTimer
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
-
         DispatcherTimer Timer;
         Stopwatch stopwatch;
         private long milli, sec, min, hr, day, time;
@@ -32,9 +26,6 @@ namespace LocationTimer
 
         private void btnLapReset_Click(object sender, RoutedEventArgs e)
         {
-            //long timeRightNow;
-            //TextBlock tblLapTime;
-
             if (btnLapReset.Content.ToString() == "Reset")
             {
                 // rezero all timers
@@ -42,28 +33,7 @@ namespace LocationTimer
                 day = hr = min = sec = milli = 0;
                 tblTimeDisplay.Text = "00:00:00:00:000";
                 btnLapReset.IsEnabled = false;
-
             }
-            /*else     // Text = "Lap"
-            {
-                // save the current time, add to list
-                if (timeList == null)
-                {
-                    timeList = new List<long>();
-                    time = 0;
-                }
-                // get the ellapsed milliseconde
-                // subtract the last one and then store the difference
-                timeRightNow = stopwatch.ElapsedMilliseconds;
-                timeList.Add(timeRightNow - time);
-                time = timeRightNow;
-
-                tblLapTime = new TextBlock();
-                tblLapTime.Text = timeList.Last().ToString();
-                tblLapTime.HorizontalAlignment = HorizontalAlignment.Center;
-
-                spLapTimes.Children.Add(tblLapTime);
-            }*/
         }
 
         public MainPage()
@@ -111,7 +81,6 @@ namespace LocationTimer
                                    min.ToString("00") + ":" +
                                    sec.ToString("00") + ":" +
                                    milli.ToString("000");
-
         }
 
         private void btnStartStop_Click(object sender, RoutedEventArgs e)
