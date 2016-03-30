@@ -22,7 +22,7 @@ namespace LocationTimer
 {
     public sealed partial class MainPage : Page
     {
-        //Geolocator geoLo;
+        Geolocator geoLo;
         DispatcherTimer Timer;
         Stopwatch stopwatch;
         private long milli, sec, min, hr, day, time;
@@ -43,86 +43,36 @@ namespace LocationTimer
         public MainPage()
         {
             this.InitializeComponent();
-            //setupLocation();
-            updateMap();
+            setupLocation();
         }
 
-        private async void updateMap()
+        public async void setupLocation()
         {
-            Geolocator geolocator = new Geolocator();
-            geolocator.DesiredAccuracyInMeters = 50;
-            Geoposition position = await geolocator.GetGeopositionAsync(TimeSpan.FromMinutes(2), TimeSpan.FromSeconds(30));
-        }
-
-       /* public async void setupLocation()
-        {
-            // ask for permission 
+            // Set your current location.
             var accessStatus = await Geolocator.RequestAccessAsync();
             switch (accessStatus)
             {
                 case GeolocationAccessStatus.Allowed:
-                    {
-                        MessageDialog accessMsg = new MessageDialog("retreving location");
-                        await accessMsg.ShowAsync();
-                        geoLo = new Geolocator();
-                        geoLo.DesiredAccuracy = PositionAccuracy.High;
-                        //geoLo = new Geolocator { DesiredAccuracyInMeters = _desiredAccuracy };
-                        geoLo.ReportInterval = (uint)5000;
-                        // set up the events
-                        // status changed, position changed
-                        //geoLo.StatusChanged += MyGeo_StatusChanged;
-                        // myGeo.PositionChanged += MyGeo_PositionChanged;
-                        // get our current position.
-                        //Geoposition pos = await myGeo.GetGeopositionAsync();
 
-                        //updateMainPage(pos);
+                    // Get the current location of the user.
+                    Geolocator geolocator = new Geolocator();
+                    Geoposition geoposition = await geolocator.GetGeopositionAsync();
+                    Geopoint geopoint = geoposition.Coordinate.Point;
 
-                        break;
-                    }
+                    // Set the map location to the users current location.
+                    Map.Center = geopoint;
+                    Map.ZoomLevel = 18; // set the zoom level, 18 seems to be best suited to my ideas
+                    break;
+
                 case GeolocationAccessStatus.Denied:
-                    {
-                        MessageDialog accessMsg = new MessageDialog("Please turn on location data");
-                        await accessMsg.ShowAsync();
-                        break;
-                    }
-                default:
-                    {
-                        MessageDialog accessMsg = new MessageDialog("Unspecified problem accessing location data");
-                        await accessMsg.ShowAsync();
-                        break;
-                    }
+                    // yet to make it do something if acces is denied
+                    break;
+
+                case GeolocationAccessStatus.Unspecified:
+                    // yet to make it do something if some unexpected happends
+                    break;
             }
-        }*/
-
-      /*  private async void MyGeo_StatusChanged(Geolocator sender, StatusChangedEventArgs args)
-        {
-            // use the dispatcher with lambda fuction to update the UI thread.
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                // code to run in method to update UI
-                switch (args.Status)
-                {
-                    case PositionStatus.Ready:
-                        // what here?
-                        txtInformation.Text = "Locations services normal";
-                        break;
-                    case PositionStatus.Disabled:
-                        txtInformation.Text = "Turn on location services";
-                        break;
-                    case PositionStatus.NoData:
-                        txtInformation.Text = "No data received from Location services";
-                        break;
-                    case PositionStatus.Initializing:
-                        txtInformation.Text = "Initialising Location services";
-                        break;
-                    default:
-                        txtInformation.Text = "Unknown problem with your location services";
-                        break;
-                }
-
-            });
-
-        }*/
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

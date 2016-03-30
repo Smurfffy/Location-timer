@@ -6,6 +6,7 @@
     xmlns:bm="using:Bing.Maps"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -23,22 +24,13 @@
                 <Button x:Name="btnLapReset" Content="Reset" IsEnabled ="false" Margin="5" Click="btnLapReset_Click" />
                 <Button x:Name="btnSave" Content="Save" Margin="5" />
             </StackPanel>
-
         </StackPanel>
-        <StackPanel HorizontalAlignment="Center" Margin="10" VerticalAlignment="Bottom">
-            <bm:Map Credentials="7TkKTTXTk4ht01L8MC81~PQzBv6HYpZU-MWoJPxOUsA~AgC8iYq1RDB7ZVuw43IbvcO7OwQ7QRybL-GQDFZmtTi3QkxAbHHT11HYQg7M2gmM" x:Name="myMap" MapType="Road" ZoomLevel="12" Width="350" Height="400">
-                <bm:Map.Center>
-                    <bm:Location Latitude="53.2777082" Longitude="-9.0098961" />
-                </bm:Map.Center>
 
-                <bm:Map.Children>
-                    <bm:Pushpin>
-                        <bm:MapLayer.Position>
-                            <bm:Location Latitude="53.2777082" Longitude="-9.0098961"/>
-                        </bm:MapLayer.Position>
-                    </bm:Pushpin>
-                </bm:Map.Children>
-            </bm:Map>
+        <StackPanel HorizontalAlignment="Center" Margin="10" VerticalAlignment="Bottom">
+            <Maps:MapControl
+            x:Name="Map"
+            MapServiceToken="7TkKTTXTk4ht01L8MC81~PQzBv6HYpZU-MWoJPxOUsA~AgC8iYq1RDB7ZVuw43IbvcO7OwQ7QRybL-GQDFZmtTi3QkxAbHHT11HYQg7M2gmM" 
+            Height="400" Width="400" />
         </StackPanel>
         
 
