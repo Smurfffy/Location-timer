@@ -4,9 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,10 +22,11 @@ namespace LocationTimer
 {
     public sealed partial class MainPage : Page
     {
+        //Geolocator geoLo;
         DispatcherTimer Timer;
         Stopwatch stopwatch;
         private long milli, sec, min, hr, day, time;
-        List<long> timeList;
+        //List<long> timeList;
 
         private void btnLapReset_Click(object sender, RoutedEventArgs e)
         {
@@ -39,7 +43,86 @@ namespace LocationTimer
         public MainPage()
         {
             this.InitializeComponent();
+            //setupLocation();
+            updateMap();
         }
+
+        private async void updateMap()
+        {
+            Geolocator geolocator = new Geolocator();
+            geolocator.DesiredAccuracyInMeters = 50;
+            Geoposition position = await geolocator.GetGeopositionAsync(TimeSpan.FromMinutes(2), TimeSpan.FromSeconds(30));
+        }
+
+       /* public async void setupLocation()
+        {
+            // ask for permission 
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+                    {
+                        MessageDialog accessMsg = new MessageDialog("retreving location");
+                        await accessMsg.ShowAsync();
+                        geoLo = new Geolocator();
+                        geoLo.DesiredAccuracy = PositionAccuracy.High;
+                        //geoLo = new Geolocator { DesiredAccuracyInMeters = _desiredAccuracy };
+                        geoLo.ReportInterval = (uint)5000;
+                        // set up the events
+                        // status changed, position changed
+                        //geoLo.StatusChanged += MyGeo_StatusChanged;
+                        // myGeo.PositionChanged += MyGeo_PositionChanged;
+                        // get our current position.
+                        //Geoposition pos = await myGeo.GetGeopositionAsync();
+
+                        //updateMainPage(pos);
+
+                        break;
+                    }
+                case GeolocationAccessStatus.Denied:
+                    {
+                        MessageDialog accessMsg = new MessageDialog("Please turn on location data");
+                        await accessMsg.ShowAsync();
+                        break;
+                    }
+                default:
+                    {
+                        MessageDialog accessMsg = new MessageDialog("Unspecified problem accessing location data");
+                        await accessMsg.ShowAsync();
+                        break;
+                    }
+            }
+        }*/
+
+      /*  private async void MyGeo_StatusChanged(Geolocator sender, StatusChangedEventArgs args)
+        {
+            // use the dispatcher with lambda fuction to update the UI thread.
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                // code to run in method to update UI
+                switch (args.Status)
+                {
+                    case PositionStatus.Ready:
+                        // what here?
+                        txtInformation.Text = "Locations services normal";
+                        break;
+                    case PositionStatus.Disabled:
+                        txtInformation.Text = "Turn on location services";
+                        break;
+                    case PositionStatus.NoData:
+                        txtInformation.Text = "No data received from Location services";
+                        break;
+                    case PositionStatus.Initializing:
+                        txtInformation.Text = "Initialising Location services";
+                        break;
+                    default:
+                        txtInformation.Text = "Unknown problem with your location services";
+                        break;
+                }
+
+            });
+
+        }*/
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
