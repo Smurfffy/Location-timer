@@ -12,7 +12,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <StackPanel HorizontalAlignment="Center" Margin="10" VerticalAlignment="Top">
-            <TextBlock x:Name="txtInformation" Margin="20" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="txtInformation" Margin="20" HorizontalAlignment="Center" TextWrapping="Wrap"/>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Margin="75" VerticalAlignment="Top" >
@@ -22,7 +22,7 @@
                 <Button x:Name="btnStartStop" Content="Start" Margin="5"
                         Background="Green" Foreground="White" Click="btnStartStop_Click"/>
                 <Button x:Name="btnLapReset" Content="Reset" IsEnabled ="false" Margin="5" Click="btnLapReset_Click" />
-                <Button x:Name="btnSave" Content="Save" Margin="5" />
+                <Button x:Name="btnSave" Content="Save" Margin="5" Click="btnSave_Click" />
             </StackPanel>
         </StackPanel>
 

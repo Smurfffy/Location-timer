@@ -46,6 +46,41 @@ namespace LocationTimer
             setupLocation();
         }
 
+        private async void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+            // Set your current location.
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+
+                    // Get the current location of the user.
+                    Geolocator geolocator = new Geolocator();
+                    Geoposition geoposition = await geolocator.GetGeopositionAsync();
+                    Geopoint geopoint = geoposition.Coordinate.Point;
+
+                    // Set the map location to the users current location.
+                    Map.Center = geopoint;
+                    Map.ZoomLevel = 18; // set the zoom level, 18 seems to be best suited to my ideas
+                    //saves time taken in milliseconds
+                    time = stopwatch.ElapsedMilliseconds;
+                    //displays information to txtInformation text block
+                    txtInformation.Text = ("Latitute " + geoposition.Coordinate.Latitude.ToString() + " Longitude " + geoposition.Coordinate.Longitude.ToString() + " in "  + time.ToString() + "ms");
+                    break;
+
+                case GeolocationAccessStatus.Denied:
+                    // yet to make it do something if acces is denied
+                    break;
+
+                case GeolocationAccessStatus.Unspecified:
+                    // yet to make it do something if some unexpected happends
+                    break;
+            }
+            
+
+        }
+
         public async void setupLocation()
         {
             // Set your current location.
