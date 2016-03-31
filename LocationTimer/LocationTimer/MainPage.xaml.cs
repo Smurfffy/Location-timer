@@ -22,20 +22,23 @@ namespace LocationTimer
 {
     public sealed partial class MainPage : Page
     {
-        //Geolocator geoLo;
         DispatcherTimer Timer;
         Stopwatch stopwatch;
         private long milli, sec, min, hr, day, time;
         String longitude, latitude;
 
-        private void btnLapReset_Click(object sender, RoutedEventArgs e)
+        private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            if (btnLapReset.Content.ToString() == "Reset")
+            //Resets the time to 00:00:00:00:000
+            if (btnReset.Content.ToString() == "Reset")
             {
                 stopwatch.Reset();
                 day = hr = min = sec = milli = 0;
                 tblTimeDisplay.Text = "00:00:00:00:000";
-                btnLapReset.IsEnabled = false;
+                btnReset.IsEnabled = false; // greys out reset button
+                btnFinish.IsEnabled = false; // greys out finish buttons
+                btnStartStop.IsEnabled = true; // enables start button
+                txtInformation.Text = ""; // clears text block
             }
         }
 
@@ -44,25 +47,27 @@ namespace LocationTimer
             this.InitializeComponent();
         }
 
-        private async void btnSave_Click(object sender, RoutedEventArgs e)
+        private async void btnFinish_Click(object sender, RoutedEventArgs e)
         {
+            btnStartStop.IsEnabled = false;
+            //location gotten again for results
             var accessStatus = await Geolocator.RequestAccessAsync();
             switch (accessStatus)
             {
                 case GeolocationAccessStatus.Allowed:
 
-                    // Get the current location of the user.
+                    // Get the new location of the user.
                     Geolocator geolocator = new Geolocator();
                     Geoposition geoposition = await geolocator.GetGeopositionAsync();
                     Geopoint geopoint = geoposition.Coordinate.Point;
 
-                    // Set the map location to the users current location.
+                    // Set the map location to the users new location.
                     Map.Center = geopoint;
                     Map.ZoomLevel = 18; // set the zoom level, 18 seems to be best suited to my ideas
                     //saves time taken in milliseconds
                     time = stopwatch.ElapsedMilliseconds;
                     //displays information to txtInformation text block
-                    txtInformation.Text = ("You went from Latitude " + latitude + " Longitude " + longitude + " to " + "Latitute " + geoposition.Coordinate.Latitude.ToString() + " Longitude " + geoposition.Coordinate.Longitude.ToString() + " in "  + time.ToString() + "ms");
+                    txtInformation.Text = ("You went from Latitude: " + latitude + ", Longitude: " + longitude + " to " + "Latitute: " + geoposition.Coordinate.Latitude.ToString() + ", Longitude: " + geoposition.Coordinate.Longitude.ToString() + " in "  + time.ToString() + "ms");
                     break;
 
                 case GeolocationAccessStatus.Denied:
@@ -92,11 +97,9 @@ namespace LocationTimer
             base.OnNavigatedTo(e);
         }
 
+        //Finding out the ellapsed time in milliseconds
         private void MyStopwatchTimer_Tick(object sender, object e)
         {
-            // update the textblock with the time elapsed
-            // figure out the elapsed time using the timer properties
-            // some maths division and modulus
             milli = stopwatch.ElapsedMilliseconds;
 
             sec = milli / 1000;
@@ -121,11 +124,13 @@ namespace LocationTimer
         {
             if (btnStartStop.Content.ToString() == "Start")
             {
-                // start the timer, change the text
+                //Timer starts
                 Timer.Start();
                 stopwatch.Start();
-                btnStartStop.Content = "Pause";
-                btnStartStop.Background = new SolidColorBrush(Colors.Red);
+                btnStartStop.Content = "Pause"; // Changes text of button to Pause
+                btnReset.IsEnabled = false; // disables reset button
+                btnFinish.IsEnabled = false; // disables finish button
+                btnStartStop.Background = new SolidColorBrush(Colors.Red); // changed colour of button to red
 
                 // Set your current location.
                 var accessStatus = await Geolocator.RequestAccessAsync();
@@ -154,11 +159,13 @@ namespace LocationTimer
                         break;
                 }
             }
-            else   //equal to stop
+            else
             {
+                //Timer Stops
                 Timer.Stop();
                 stopwatch.Stop();
-                btnLapReset.IsEnabled = true;
+                btnReset.IsEnabled = true; // enables reset button
+                btnFinish.IsEnabled = true; // enables finish button
                 btnStartStop.Content = "Start";
                 btnStartStop.Background = new SolidColorBrush(Colors.Green);
             }

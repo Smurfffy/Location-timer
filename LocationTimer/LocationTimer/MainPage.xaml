@@ -21,8 +21,8 @@
             <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center"  >
                 <Button x:Name="btnStartStop" Content="Start" Margin="5"
                         Background="Green" Foreground="White" Click="btnStartStop_Click"/>
-                <Button x:Name="btnLapReset" Content="Reset" IsEnabled ="false" Margin="5" Click="btnLapReset_Click" />
-                <Button x:Name="btnSave" Content="Save" Margin="5" Click="btnSave_Click" />
+                <Button x:Name="btnReset" Content="Reset" IsEnabled ="false" Margin="5" Click="btnReset_Click" />
+                <Button x:Name="btnFinish" Content="Finish" IsEnabled ="false" Margin="5" Click="btnFinish_Click" />
             </StackPanel>
         </StackPanel>
 
