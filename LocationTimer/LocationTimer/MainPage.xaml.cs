@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Devices.Geolocation;
+using Windows.Devices.Geolocation;// msdn universal app documentation referenced for map and geolocation.
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -17,8 +17,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Windows.Media.Capture;//
-using Windows.Storage;//
+using Windows.Media.Capture;// msdn universal app documentaion referenced for camera
+using Windows.Storage;
 
 namespace LocationTimer
 {
@@ -28,6 +28,21 @@ namespace LocationTimer
         Stopwatch stopwatch;
         private long milli, sec, min, hr, day, time;
         String longitude, latitude;
+
+        private async void btnPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            CameraCaptureUI camera = new CameraCaptureUI(); // creates the camera interface
+            camera.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg; // saves image as a jpeg
+            camera.PhotoSettings.CroppedSizeInPixels = new Size(200, 200);// default crop size
+
+            StorageFile photoTaken = await camera.CaptureFileAsync(CameraCaptureUIMode.Photo); // saves the photo
+
+            //handles program if a photo is not taken.
+            if (photoTaken == null)
+            {
+                return;
+            }
+        }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
@@ -40,6 +55,7 @@ namespace LocationTimer
                 btnReset.IsEnabled = false; // greys out reset button
                 btnFinish.IsEnabled = false; // greys out finish buttons
                 btnStartStop.IsEnabled = true; // enables start button
+                btnPhoto.IsEnabled = false; // disables photo button
                 txtInformation.Text = ""; // clears text block
             }
         }
@@ -52,6 +68,8 @@ namespace LocationTimer
         private async void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             btnStartStop.IsEnabled = false;
+            btnPhoto.IsEnabled = true;
+            btnFinish.IsEnabled = false;
             //location gotten again for results
             var accessStatus = await Geolocator.RequestAccessAsync();
             switch (accessStatus)
